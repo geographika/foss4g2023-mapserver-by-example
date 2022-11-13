@@ -1,0 +1,120 @@
+<section data-markdown>
+    <script type="text/template">
+        ## MapServer 8.0 Release
+
+        - Major development proposed as a [Request for Comment](https://mapserver.org/development/rfc/index.html) (RFC)
+        - Release candidate 8.0.0-rc1 [out now](https://mapserver.org/development/announce/8-0.html)!
+    </script>
+</section>
+
+<section data-markdown>
+    <script type="text/template">
+        ## MapServer 8.0 Release - Key Highlights
+
+        * [MS RFC 134: OGC API Support](https://mapserver.org/development/rfc/ms-rfc-134.html)
+        * [MS RFC 135: MapServer 8.0 Config file](https://mapserver.org/development/rfc/ms-rfc-135.html)
+        * [MS RFC 126: Port to PROJ 6 API](https://mapserver.org/development/rfc/ms-rfc-126.html)
+
+        <aside class="notes">
+            * Implements [OGC API - Features - Part 1: Core](http://docs.ogc.org/is/17-069r3/17-069r3.html)
+            * OGC Features API can be seen as the successor to WFS
+            * Increased security
+            * Consistent support across operating systems
+        </aside>
+    </script>
+</section>
+
+<section data-markdown>
+    <script type="text/template">
+        ## MapServer 8.0 Release - Key Changes
+
+        * See the [7.6 to 8.0 Migration Guide](https://mapserver.org/MIGRATION_GUIDE.html#mapserver-7-6-to-8-0-migration) for full details
+        * PHP MapScript replaced with PHPNG [SWIG](https://swig.org/) generated bindings
+        * `shp2img` renamed `map2img`
+        * A global `CONFIG` file is now required
+        <pre><code data-noescape>CONFIG
+    ENV
+      # limit Mapfile Access
+      # required when referencing Mapfiles by path
+      MS_MAP_PATTERN "^/opt/mapserver"
+    END
+END</code></pre>
+
+    </script>
+</section>
+
+<section data-markdown>
+    <script type="text/template">
+        ## MapServer 8.0 Mapfile Syntax Changes
+
+        * [Mapfile Syntax Cleanup](https://mapserver.org/development/rfc/ms-rfc-133.html)
+        * Validation available using [mappyfile](https://mappyfile.readthedocs.io/en/latest/)
+        * Try online! [http://mappyfile.geographika.net/](http://mappyfile.geographika.net/)
+
+    </script>
+</section>
+
+<section data-markdown data-background="images/flatgeobuffers.jpg" data-background-opacity="0.1" data-background-size="40%">
+    <script type="text/template">
+        ### [MS RFC 137: Native FlatGeobuf Support](https://mapserver.org/development/rfc/ms-rfc-137.html)
+
+        * Fast binary encoding for geographic data based on Google's [flatbuffers](http://google.github.io/flatbuffers/)
+        * [FlatGeobuf](https://github.com/flatgeobuf/flatgeobuf) very fast to write and keeps all coordinates, vector tiles are slower to create and can generalise geometries
+
+        <div class="meta">
+            Thanks to <a href="https://github.com/bjornharrtell" target="_blank">Björn Harrtell</a> for development
+        </div>
+    </script>
+</section>
+
+<section data-markdown data-background="images/flatgeobuffers.jpg" data-background-opacity="0.1" data-background-size="40%">
+    <script type="text/template">
+        ### [Native FlatGeobuf Performance](https://mapserver.org/development/rfc/ms-rfc-137.html#performance-implications)
+
+        <pre><code data-trim data-noescape>
+    FlatGeobuf (native) 0.008s
+    Shapefile (native)  0.010s
+    FlatGeobuf (OGR)    0.013s
+    Shapefile (OGR)     0.023s
+    GeoPackage (OGR)    0.042s
+    SpatiaLite (OGR)    0.045s
+    PostGIS (native)    0.053s
+    GeoJSON (OGR)       0.089s
+
+    data: world extents, with country labels
+    environment: MapServer-main + GDAL 3.4.3 (MS4W/Windows)
+</code></pre>
+        <div class="meta">
+            Thanks to <a href="https://github.com/jmckenna" target="_blank">Jeff McKenna</a> for testing, benchmarks, and integration
+        </div>
+    </script>
+</section>
+
+<section data-markdown data-background="images/shapefile.jpg" data-background-opacity="0.1" data-background-size="40%">
+    <script type="text/template">
+        ### [Cloud Optimized Shapefiles](https://github.com/MapServer/MapServer/pull/6518)
+
+        * Sort Shapefile contents to enable fast bounding box access of shapes over HTTP-offset reads
+        * New `coshp` utility
+        * `coshp input.shp input_sorted.shp`
+
+        <div class="meta">
+            Thanks to <a href="https://github.com/pramsey" target="_blank">Paul Ramsey</a> for development
+        </div>
+    </script>
+</section>
+
+<section data-markdown data-background="images/mapscript_api_classObj.png" data-background-opacity="0.2" data-background-size="45%">
+    <script type="text/template">
+        ### MapScript Changes
+
+        * [MS RFC 132: Update MapScript API Docs](https://mapserver.org/development/rfc/ms-rfc-132.html)
+          * [Full API documentation](https://mapserver.org/mapscript/mapscript-api/index.html)
+          * Auto-generated from Python MapScript bindings
+          * Links to Mapfile documentation
+          * Up-to-date with latest codebase
+        * [MS RFC 117: PHP 7 MapScript Support Through SWIG](https://mapserver.org/development/rfc/ms-rfc-117.html)
+          * Supports PHP 7+
+          * Native PHP MapScript dropped in MapServer 8.0
+    </script>
+</section>

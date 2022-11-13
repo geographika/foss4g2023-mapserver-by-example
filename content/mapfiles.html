@@ -1,0 +1,83 @@
+<section data-markdown>
+    <script type="text/template">
+        ## Mapfiles by Example
+
+        #30DayMapChallenge examples
+    </script>
+</section>
+
+<section data-background="images/space-map.png">
+    <h1 style="color:white">Space</h1>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="5-6|7|8-10">
+LAYER
+  TYPE POINT
+  NAME "constellations"
+  STATUS ON
+  CONNECTIONTYPE OGR
+  CONNECTION "/vsicurl/https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/stars.14.json"
+  PROCESSING "NATIVE_FILTER=mag>12"
+  COMPOSITE
+    COMPFILTER "blur(5)"
+    OPACITY 90
+  END
+  CLASS
+    STYLE
+      SYMBOL "circle"
+      COLOR "#ffcd3c" # unnamed
+      SIZE [mag]
+    END
+  END
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Read GeoJSON from GitHub
+            - Filter the GeoJSON
+            - Make a blurry star effect
+        </script>
+    </span>
+</section>
+
+<section data-background-image="images/filegdb_states.png">
+    <h2 style="color:black">FlatGeoBuffers</h2>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="7-9|14-15">
+MAP
+  NAME "FlatGeoBuf"
+  EXTENT -125.19682772605225 17.74964753282352 -66.3649974199852 62.066682932234244
+  PROJECTION
+    "init=epsg:26915"
+  END
+  CONFIG "AWS_ACCESS_KEY_ID" "XXXXX"
+  CONFIG "AWS_SECRET_ACCESS_KEY" "XXXXX"
+  CONFIG "AWS_S3_ENDPOINT" "fra1.digitaloceanspaces.com"
+  LAYER
+    NAME "UScounties"
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE OGR # data from https://github.com/flatgeobuf/flatgeobuf/tree/master/test/data
+    CONNECTION "/vsis3/mapserverstudio/data/UScounties.fgb"
+    PROJECTION
+      "init=epsg:26915"
+    END
+    CLASS
+      STYLE
+        OUTLINECOLOR "#c8c8c8"
+      END
+    END
+  END
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Configure access to a secure S3 bucket
+            - Connect to a remote FlatGeoBuffers file
+        </script>
+    </span>
+</section>
+
