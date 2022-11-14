@@ -2,7 +2,7 @@
     <script type="text/template">
         ## Mapfiles by Example
 
-        #30DayMapChallenge examples
+        Examples from [@mapserverstudio](https://twitter.com/mapserverstudio) [#30DayMapChallenge](https://twitter.com/hashtag/30DayMapChallenge)
     </script>
 </section>
 
@@ -55,7 +55,7 @@ MAP
   END
   CONFIG "AWS_ACCESS_KEY_ID" "XXXXX"
   CONFIG "AWS_SECRET_ACCESS_KEY" "XXXXX"
-  CONFIG "AWS_S3_ENDPOINT" "fra1.digitaloceanspaces.com"
+  CONFIG "AWS_S3_ENDPOINT" "XXXXX"
   LAYER
     NAME "UScounties"
     TYPE POLYGON
@@ -81,3 +81,155 @@ END
     </span>
 </section>
 
+<section data-background-image="images/hatching.png" data-background-size="60%">
+    <h2 style="color:black">Hatching Fills</h2>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="1-4|6-16">
+SYMBOL
+    NAME "hatchsymbol"
+    TYPE HATCH
+END
+
+STYLE
+    SYMBOL "hatchsymbol"
+    COLOR "#ef3038"
+    SIZE 10
+    WIDTH 3
+    ANGLE 45
+    PATTERN
+        20 10
+        10 10
+    END
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Define the hatch symbol
+            - Configure the hatching
+        </script>
+    </span>
+</section>
+
+<section data-background-image="images/graticules.png" data-background-size="70%">
+    <h2 style="color:black">Graticules</h2>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="5-7|10-22">
+LAYER
+  NAME "grid"
+  TYPE LINE
+  STATUS ON
+  GRID
+    LABELFORMAT DDMM
+  END
+  CLASS
+    NAME "Graticule"
+    STYLE
+      COLOR "#ffffff"
+    END
+    LABEL
+      COLOR "#ffffff"
+      FONT "arial"
+      TYPE TRUETYPE
+      SIZE 12
+      POSITION AUTO
+      PARTIALS FALSE
+      BUFFER 2
+    END
+  END
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Add a GRID configuration to a LAYER
+            - Style the GRID and add labels
+        </script>
+    </span>
+</section>
+
+<section data-background-image="images/raster.png">
+    <h2 style="color:black">Raster Data</h2>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="2-5|7|8|10-17">
+MAP
+    CONFIG "AWS_ACCESS_KEY_ID" "XXXX"
+    CONFIG "AWS_SECRET_ACCESS_KEY" "XXX"
+    CONFIG "AWS_REQUEST_PAYER" "requester"
+    LAYER
+        NAME "RasterLayer"
+        TYPE RASTER
+        DATA "/vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/43/R/FL/2022/2/S2A_43RFL_20220213_0_L2A/B01.tif"
+        STATUS ON
+        CLASS
+            NAME "colorramp"
+            STYLE
+                COLORRANGE "#264cff" "#ffffbf"
+                DATARANGE 1000 1500
+                RANGEITEM "value_0"
+            END
+        END
+    END
+...
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Add the AWS settings
+            - Create a LAYER of TYPE RASTER
+            - Set a DATA source of a raster in a s3 bucket
+            - Style the raster using a COLORRANGE across a DATARANGE
+        </script>
+    </span>
+</section>
+
+<section data-background-image="images/osm.png" data-background-size="100%">
+    <h2 style="color:black">Pixel Fills</h2>
+
+    <sub>Data © OpenStreetMap</sub>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="1-5|14-18">
+SYMBOL
+    NAME "background"
+    TYPE PIXMAP
+    IMAGE "paper.png"
+END
+
+LAYER
+    NAME "admin"
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "osm"
+    DATA "geometry from (select * from osm_admin where osm_id = -42602) as subquery using unique id using srid=3857"
+    CLASS
+        STYLE
+            SYMBOL "background"
+        END
+    END
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Define a PIXMAP symbol
+            - Set the SYMBOL in the CLASS STYLE
+        </script>
+    </span>
+</section>
+
+<section data-markdown>
+    <script type="text/template">
+        ##  Summary
+
+        - Take advantage of GDALs [Virtual Files](https://mapserver.org/input/virtual-file.html)
+        - Powerful cartography options
+        - Web and OGC standards ready maps
+
+    </script>
+</section>
