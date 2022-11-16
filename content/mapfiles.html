@@ -2,7 +2,9 @@
     <script type="text/template">
         ## Mapfiles by Example
 
-        Examples from [@mapserverstudio](https://twitter.com/mapserverstudio) [#30DayMapChallenge](https://twitter.com/hashtag/30DayMapChallenge)
+        Examples from
+        <a href="https://twitter.com/mapserverstudio" target="_blank"><img class="plain" src="images/langfr-1280px-Twitter_Bird.svg.png" style="background: none;vertical-align:middle;height: 24px" />@mapserverstudio</a>
+        [#30DayMapChallenge](https://twitter.com/hashtag/30DayMapChallenge)
     </script>
 </section>
 
@@ -106,7 +108,7 @@ END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
-            - Define the hatch symbol
+            - Define the HATCH symbol
             - Configure the hatching
         </script>
     </span>
@@ -223,13 +225,78 @@ END
     </span>
 </section>
 
+<section data-background-image="images/pie-charts-map.png">
+    <h2 style="color:black">Dynamic Pie Charts</h2>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="9-10|20|25-27">
+    LAYER
+        NAME "charts"
+        PROJECTION
+            "init=epsg:4326"
+        END
+        STATUS ON
+        CONNECTIONTYPE OGR
+        CONNECTION "<OGRVRTDataSource>
+    <OGRVRTLayer name='joined'>
+        <SrcDataSource shared='TRUE'><![CDATA[<OGRVRTDataSource>
+    <OGRVRTLayer name='countries'>
+        <SrcDataSource>/vsis3/mapserverstudio/data/natural_earth_vector.gpkg</SrcDataSource>
+        <SrcLayer>ne_10m_admin_0_countries</SrcLayer>
+    </OGRVRTLayer>
+    <OGRVRTLayer name='energy'>
+        <SrcDataSource>/vsicurl/https://nyc3.digitaloceanspaces.com/owid-public/data/energy/owid-energy-data.csv</SrcDataSource>
+        <SrcSQL dialect='sqlite'>SELECT iso_code, fossil_share_elec, nuclear_share_elec, renewables_share_elec FROM \"owid-energy-data\" WHERE year = '2020'</SrcSQL>
+    </OGRVRTLayer>
+</OGRVRTDataSource>]]></SrcDataSource>
+        <SrcSQL>SELECT ISO_A3,fossil_share_elec,nuclear_share_elec,renewables_share_elec, geom FROM countries c LEFT JOIN energy e ON c.ISO_A3 = e.iso_code</SrcSQL>
+    </OGRVRTLayer>
+</OGRVRTDataSource>"
+        DATA "joined"
+        EXTENT -180.0 -90.0 180.0 90
+        TYPE CHART
+        PROCESSING "CHART_TYPE=pie"
+        PROCESSING "CHART_SIZE=35"
+        CLASS
+            NAME "Electricity from Fossil Fuels"
+            STYLE
+                SIZE [fossil_share_elec]
+                COLOR "#313330"
+            END
+        END
+        CLASS
+            NAME "Electricity from Nuclear"
+            STYLE
+                SIZE [nuclear_share_elec]
+                COLOR "#f0ba32"
+            END
+        END
+        CLASS
+            NAME "Electricity from Renewables"
+            STYLE
+                SIZE [renewables_share_elec]
+                COLOR "#29b675"
+            END
+        END
+    END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Use CDATA for nested data sources
+            - Use SQL to JOIN and select from the data sources
+            - Set the LAYER to TYPE CHART and set properties
+        </script>
+    </span>
+</section>
+
 <section data-markdown>
     <script type="text/template">
         ##  Summary
 
         - Take advantage of GDALs [Virtual Files](https://mapserver.org/input/virtual-file.html)
         - Powerful cartography options
-        - Web and OGC standards ready maps
+        - Web-ready maps using OGC standards
 
     </script>
 </section>
