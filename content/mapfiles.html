@@ -83,6 +83,29 @@ END
     </span>
 </section>
 
+<section data-background-image="images/filegdb_states_green.png" data-background-size="90%">
+    <h2 style="color:white">FlatGeoBuffers and COLORRANGE</h2>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="4|5-6">
+CLASS
+    STYLE
+        OUTLINECOLOR 200 200 200
+        RANGEITEM "COUNTY_FIP"
+        COLORRANGE "#063b00" "#0eff00"
+        DATARANGE 0 500
+    END
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Use a feature attribute
+            - Set a start and end colour and map to a data range
+        </script>
+    </span>
+</section>
+
 <section data-background-image="images/hatching.png" data-background-size="60%">
     <h2 style="color:black">Hatching Fills</h2>
 </section>
