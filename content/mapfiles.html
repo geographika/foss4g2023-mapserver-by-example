@@ -13,7 +13,7 @@
 </section>
 
 <section>
-    <pre><code class="language-python" data-trim data-line-numbers="5-6|7|8-10">
+    <pre><code class="language-python" data-trim data-line-numbers="5-6|7|8-11">
 LAYER
   TYPE POINT
   NAME "constellations"
@@ -43,8 +43,8 @@ END
     </span>
 </section>
 
-<section data-background-image="images/filegdb_states.png">
-    <h2 style="color:black">FlatGeoBuffers</h2>
+<section data-background-image="images/filegdb_states_green.png" data-background-size="90%">
+    <h2 style="color:white">FlatGeoBuffers and COLORRANGE</h2>
 </section>
 
 <section>
@@ -83,10 +83,6 @@ END
     </span>
 </section>
 
-<section data-background-image="images/filegdb_states_green.png" data-background-size="90%">
-    <h2 style="color:white">FlatGeoBuffers and COLORRANGE</h2>
-</section>
-
 <section>
     <pre><code class="language-python" data-trim data-line-numbers="4|5-6">
 CLASS
@@ -100,14 +96,16 @@ END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
+            #### Colour Range
+
             - Use a feature attribute
             - Set a start and end colour and map to a data range
         </script>
     </span>
 </section>
 
-<section data-background-image="images/hatching.png" data-background-size="60%">
-    <h2 style="color:black">Hatching Fills</h2>
+<section data-background-image="images/disputed_areas.png">
+    <h2 style="color:black">Hatching and Leader Lines</h2>
 </section>
 
 <section>
@@ -119,58 +117,93 @@ END
 
 STYLE
     SYMBOL "hatchsymbol"
-    COLOR "#ef3038"
-    SIZE 10
-    WIDTH 3
+    COLOR "#DC143C"
+    WIDTH 0.4
     ANGLE 45
-    PATTERN
-        20 10
-        10 10
-    END
+    SIZE 3
 END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
             - Define the HATCH symbol
             - Configure the hatching
+            - https://app.mapserverstudio.net/#i8eY58sZ
         </script>
     </span>
 </section>
 
-<section data-background-image="images/graticules.png" data-background-size="70%">
-    <h2 style="color:black">Graticules</h2>
+<section data-background-image="images/contours2.png">
+    <h2 style="color:black">Contours</h2>
 </section>
 
 <section>
-    <pre><code class="language-python" data-trim data-line-numbers="5-7|10-22">
+    <pre><code class="language-python" data-trim data-line-numbers="5-6|8-9">
 LAYER
-  NAME "grid"
-  TYPE LINE
-  STATUS ON
-  GRID
-    LABELFORMAT DDMM
-  END
-  CLASS
-    NAME "Graticule"
-    STYLE
-      COLOR "#ffffff"
+    NAME "contours"
+    TYPE LINE
+    STATUS ON
+    CONNECTIONTYPE CONTOUR
+    DATA "/data/copernicus/eu_dem_v11_E10N00.TIF"
+    PROCESSING "BANDS=1"
+    PROCESSING "CONTOUR_ITEM=elevation"
+    PROCESSING "CONTOUR_INTERVAL=10"
+    CLASS
+        STYLE
+            WIDTH 0.4
+            COLOR 50 50 50
+        END
     END
-    LABEL
-      COLOR "#ffffff"
-      FONT "arial"
-      TYPE TRUETYPE
-      SIZE 12
-      POSITION AUTO
-      PARTIALS FALSE
-      BUFFER 2
-    END
-  END
 END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
+            - Use a CONTOUR CONNECTIONTYPE
+            - Set the raster DEM datasource
+            - Configure the contour intervals, GDAL handles the rest
+            - https://app.mapserverstudio.net/#iSCZaMdN
+        </script>
+    </span>
+</section>
+
+<section data-background-image="images/polar_graticules.png">
+    <h2 style="color:black">Graticules</h2>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="4-6|7-10|13-24">
+LAYER
+    NAME "grid"
+    TYPE LINE
+    PROJECTION
+        "init=epsg:3857"
+    END
+    GRID
+        MININTERVAL 1000000
+        LABELFORMAT "%.fm"
+    END
+    CLASS
+        NAME "Graticule"
+        STYLE
+            COLOR 70 70 70
+        END
+        LABEL
+            FONT "Baskervville"
+            OUTLINEWIDTH 3
+            OUTLINECOLOR 255 255 255
+            TYPE TRUETYPE
+            SIZE 12
+            ANGLE FOLLOW
+            BUFFER 10
+        END
+    END
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Use a different projection from the map
             - Add a GRID configuration to a LAYER
             - Style the GRID and add labels
+            - https://app.mapserverstudio.net/#WqW8rb8i
         </script>
     </span>
 </section>
@@ -180,25 +213,25 @@ END
 </section>
 
 <section>
-    <pre><code class="language-python" data-trim data-line-numbers="2-5|7|8|10-17">
+    <pre><code class="language-python" data-trim data-line-numbers="2-5|8|9|11-18">
 MAP
     CONFIG "AWS_ACCESS_KEY_ID" "XXXX"
     CONFIG "AWS_SECRET_ACCESS_KEY" "XXX"
     CONFIG "AWS_REQUEST_PAYER" "requester"
+    CONFIG "AWS_S3_ENDPOINT" "s3.amazonaws.com"
     LAYER
         NAME "RasterLayer"
         TYPE RASTER
-        DATA "/vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/43/R/FL/2022/2/S2A_43RFL_20220213_0_L2A/B01.tif"
+        DATA "/vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/34/T/DM/2023/6/S2B_34TDM_20230615_0_L2A/B02.tif"
         STATUS ON
         CLASS
             NAME "colorramp"
             STYLE
                 COLORRANGE "#264cff" "#ffffbf"
-                DATARANGE 1000 1500
+                DATARANGE 1346 13578
                 RANGEITEM "value_0"
             END
         END
-    END
 ...
 END
 </code></pre>
@@ -208,47 +241,46 @@ END
             - Create a LAYER of TYPE RASTER
             - Set a DATA source of a raster in a s3 bucket
             - Style the raster using a COLORRANGE across a DATARANGE
+            - https://app.mapserverstudio.net/#57BaUuL1
         </script>
     </span>
 </section>
 
-<section data-background-image="images/osm.png" data-background-size="100%">
-    <h2 style="color:black">Pixel Fills</h2>
-
-    <sub>Data © OpenStreetMap</sub>
+<section data-background-image="images/raster_analysis.png">
+    <h2 style="color:black">Raster Analysis</h2>
 </section>
 
 <section>
-    <pre><code class="language-python" data-trim data-line-numbers="1-5|14-18">
-SYMBOL
-    NAME "background"
-    TYPE PIXMAP
-    IMAGE "paper.png"
-END
-
+    <pre><code class="language-python" data-trim data-line-numbers="3-4|8|9-14">
 LAYER
-    NAME "admin"
-    TYPE POLYGON
-    STATUS ON
-    CONNECTIONTYPE POSTGIS
-    CONNECTION "osm"
-    DATA "geometry from (select * from osm_admin where osm_id = -42602) as subquery using unique id using srid=3857"
-    CLASS
-        STYLE
-            SYMBOL "background"
-        END
-    END
-END
+    NAME "Difference"
+    TYPE RASTER
+    CONNECTIONTYPE OGR
+    DATA "
+    <VRTDataset rasterXSize='8640' rasterYSize='4320'>
+    <VRTRasterBand dataType='Float32' band='1' subClass='VRTDerivedRasterBand'>
+    <PixelFunctionType>diff</PixelFunctionType>
+    <SimpleSource>
+    <SourceFilename>/data/raster/wc2.1_2.5m_tmax_2021-06.tif</SourceFilename>
+            </SimpleSource>
+    <SimpleSource>
+    <SourceFilename>/data/raster/wc2.1_2.5m_tmax_1960-06.tif</SourceFilename>
+            </SimpleSource>
+        </VRTRasterBand>
+    </VRTDataset>
+    "
 </code></pre>
     <span data-markdown>
         <script type="text/template">
-            - Define a PIXMAP symbol
-            - Set the SYMBOL in the CLASS STYLE
+            - Create a RASTER OGR layer
+            - Use GDAL's `diff` pixel function
+            - Add in the two source rasters as GDAL Virtual Format sources
+            - https://app.mapserverstudio.net/#9JBVADFh
         </script>
     </span>
 </section>
 
-<section data-background-image="images/pie-charts-map.png">
+<section data-background-image="images/pie-charts-map.png" data-background-size="60%">
     <h2 style="color:black">Dynamic Pie Charts</h2>
 </section>
 
@@ -263,17 +295,17 @@ END
         CONNECTIONTYPE OGR
         CONNECTION "<OGRVRTDataSource>
     <OGRVRTLayer name='joined'>
-        <SrcDataSource shared='TRUE'><![CDATA[<OGRVRTDataSource>
+    <SrcDataSource shared='TRUE'><![CDATA[<OGRVRTDataSource>
     <OGRVRTLayer name='countries'>
-        <SrcDataSource>/vsis3/mapserverstudio/data/natural_earth_vector.gpkg</SrcDataSource>
-        <SrcLayer>ne_10m_admin_0_countries</SrcLayer>
+    <SrcDataSource>/vsis3/mapserverstudio/data/natural_earth_vector.gpkg</SrcDataSource>
+    <SrcLayer>ne_10m_admin_0_countries</SrcLayer>
     </OGRVRTLayer>
     <OGRVRTLayer name='energy'>
-        <SrcDataSource>/vsicurl/https://nyc3.digitaloceanspaces.com/owid-public/data/energy/owid-energy-data.csv</SrcDataSource>
-        <SrcSQL dialect='sqlite'>SELECT iso_code, fossil_share_elec, nuclear_share_elec, renewables_share_elec FROM \"owid-energy-data\" WHERE year = '2020'</SrcSQL>
+    <SrcDataSource>/vsicurl/https://nyc3.digitaloceanspaces.com/owid-public/data/energy/owid-energy-data.csv</SrcDataSource>
+    <SrcSQL dialect='sqlite'>SELECT iso_code, fossil_share_elec, nuclear_share_elec, renewables_share_elec FROM \"owid-energy-data\" WHERE year = '2020'</SrcSQL>
     </OGRVRTLayer>
 </OGRVRTDataSource>]]></SrcDataSource>
-        <SrcSQL>SELECT ISO_A3,fossil_share_elec,nuclear_share_elec,renewables_share_elec, geom FROM countries c LEFT JOIN energy e ON c.ISO_A3 = e.iso_code</SrcSQL>
+    <SrcSQL>SELECT c.*,fossil_share_elec,nuclear_share_elec,renewables_share_elec FROM countries c LEFT JOIN energy e ON c.ISO_A3 = e.iso_code</SrcSQL>
     </OGRVRTLayer>
 </OGRVRTDataSource>"
         DATA "joined"
@@ -309,17 +341,92 @@ END
             - Use CDATA for nested data sources
             - Use SQL to JOIN and select from the data sources
             - Set the LAYER to TYPE CHART and set properties
+            - https://app.mapserverstudio.net/#z-JMqsSu
         </script>
     </span>
 </section>
 
-<section data-markdown>
-    <script type="text/template">
-        ##  Summary
-
-        - Take advantage of GDALs [Virtual Files](https://mapserver.org/input/virtual-file.html)
-        - Powerful cartography options
-        - Web-ready maps using OGC standards
-
-    </script>
+<section data-background="images/smoothing-6-3.png" data-background-size="70%" data-background-color="white">
+    <h1 style="color:black">Smoothing Shapes</h1>
 </section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="4">
+LAYER
+    NAME "lakes-smooth"
+    TYPE POLYGON
+    GEOMTRANSFORM (smoothsia([shape],6,3))
+    CONNECTIONTYPE OGR
+    CONNECTION "/data/naturalearth/fgb"
+    DATA "ne_10m_lakes"
+...
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Smooth a vector layer for a better rendering
+            - Uses the SIA algorithm: Smoothing via Iterative Averaging.
+            - https://app.mapserverstudio.net/#iSCZaMdN
+        </script>
+    </span>
+</section>
+
+<section data-background="images/vector_tiles.png" data-background-size="90%" data-background-color="white">
+    <h1 style="color:black">Vector Tiles</h1>
+</section>
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="4-5">
+OUTPUTFORMAT
+    NAME "mvt"
+    DRIVER "MVT"
+    FORMATOPTION "EDGE_BUFFER=20"
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Add the MVT format to the Mapfile
+            - https://geographika.github.io/mapserver-mvt/
+            - https://github.com/geographika/mapserver-mvt
+        </script>
+    </span>
+</section>
+
+
+<section>
+    <pre><code class="language-python" data-trim data-line-numbers="4-5">
+CLASSITEM "ADM0_A3"
+CLASS
+    EXPRESSION {ATA}
+    STYLE
+        COLOR "#F0F8FF"
+    END
+END
+CLASS
+    EXPRESSION {AFG,ALD,BEN,BLR,BWA,COK,COL,DNK,DOM,ERI,FIN,FRA,FRO,GIB,GNB,GNQ,GRC,GTM,JPN,KIR,LKA,MHL,MMR,MWI,NCL,OMN,RWA,SDS,SMR,SVK,SYR,TCD,TON,URY,WLF}
+    STYLE
+        COLOR "#fdaf6b"
+    END
+END
+CLASS
+    EXPRESSION {AZE,BGD,CHL,CMR,CSI,DEU,DJI,GUY,HUN,IOA,JAM,LBN,LBY,LSO,MDG,MKD,MNG,MRT,NIU,NZL,PCN,PYF,SAU,SHN,STP,TTO,UGA,UZB,ZMB}
+    STYLE
+        COLOR "#fdc663"
+    END
+END
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Add the MVT format to the Mapfile
+            - https://geographika.github.io/mapserver-mvt/
+            - https://github.com/geographika/mapserver-mvt
+        </script>
+    </span>
+</section>
+
+<section>
+    <video data-autoplay data-loop data-controls src="images/demo.mp4"></video>
+</section>
+
+
+
