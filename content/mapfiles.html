@@ -105,7 +105,7 @@ END
 </section>
 
 <section data-background-image="images/disputed_areas.png">
-    <h2 style="color:black">Hatching and Leader Lines</h2>
+    <h2 style="color:black"><a href="https://app.mapserverstudio.net/#i8eY58sZ" target="_blank">Hatching and Leader Lines</a></h2>
 </section>
 
 <section>
@@ -127,13 +127,12 @@ END
         <script type="text/template">
             - Define the HATCH symbol
             - Configure the hatching
-            - https://app.mapserverstudio.net/#i8eY58sZ
         </script>
     </span>
 </section>
 
 <section data-background-image="images/contours2.png">
-    <h2 style="color:black">Contours</h2>
+    <h2 style="color:black"><a href="https://app.mapserverstudio.net/#ULt7iPLe" target="_blank">Contours</a></h2>
 </section>
 
 <section>
@@ -160,13 +159,12 @@ END
             - Use a CONTOUR CONNECTIONTYPE
             - Set the raster DEM datasource
             - Configure the contour intervals, GDAL handles the rest
-            - https://app.mapserverstudio.net/#iSCZaMdN
         </script>
     </span>
 </section>
 
 <section data-background-image="images/polar_graticules.png">
-    <h2 style="color:black">Graticules</h2>
+    <h2><a href="https://app.mapserverstudio.net/#WqW8rb8i" target="_blank">Graticules</a></h2>
 </section>
 
 <section>
@@ -203,13 +201,12 @@ END
             - Use a different projection from the map
             - Add a GRID configuration to a LAYER
             - Style the GRID and add labels
-            - https://app.mapserverstudio.net/#WqW8rb8i
         </script>
     </span>
 </section>
 
 <section data-background-image="images/raster.png">
-    <h2 style="color:black">Raster Data</h2>
+    <h2 style="color:black"><a href="https://app.mapserverstudio.net/#57BaUuL1" target="_blank">Raster Data</a></h2>
 </section>
 
 <section>
@@ -232,8 +229,6 @@ MAP
                 RANGEITEM "value_0"
             END
         END
-...
-END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
@@ -241,13 +236,12 @@ END
             - Create a LAYER of TYPE RASTER
             - Set a DATA source of a raster in a s3 bucket
             - Style the raster using a COLORRANGE across a DATARANGE
-            - https://app.mapserverstudio.net/#57BaUuL1
         </script>
     </span>
 </section>
 
 <section data-background-image="images/raster_analysis.png">
-    <h2 style="color:black">Raster Analysis</h2>
+    <h2 style="color:black"><a href="https://app.mapserverstudio.net/#9JBVADFh" target="_blank">Raster Analysis</a></h2>
 </section>
 
 <section>
@@ -275,13 +269,12 @@ LAYER
             - Create a RASTER OGR layer
             - Use GDAL's `diff` pixel function
             - Add in the two source rasters as GDAL Virtual Format sources
-            - https://app.mapserverstudio.net/#9JBVADFh
         </script>
     </span>
 </section>
 
 <section data-background-image="images/pie-charts-map.png" data-background-size="60%">
-    <h2 style="color:black">Dynamic Pie Charts</h2>
+    <h2 style="color:black"><a href="https://app.mapserverstudio.net/#z-JMqsSu" target="_blank">Dynamic Pie Charts</a></h2>
 </section>
 
 <section>
@@ -341,13 +334,12 @@ LAYER
             - Use CDATA for nested data sources
             - Use SQL to JOIN and select from the data sources
             - Set the LAYER to TYPE CHART and set properties
-            - https://app.mapserverstudio.net/#z-JMqsSu
         </script>
     </span>
 </section>
 
 <section data-background="images/smoothing-6-3.png" data-background-size="70%" data-background-color="white">
-    <h1 style="color:black">Smoothing Shapes</h1>
+    <h1 style="color:black"><a href="https://app.mapserverstudio.net/#iSCZaMdN" target="_blank">Smoothing Geometries</a></h1>
 </section>
 
 <section>
@@ -366,13 +358,12 @@ END
         <script type="text/template">
             - Smooth a vector layer for a better rendering
             - Uses the SIA algorithm: Smoothing via Iterative Averaging.
-            - https://app.mapserverstudio.net/#iSCZaMdN
         </script>
     </span>
 </section>
 
 <section data-background="images/vector_tiles.png" data-background-size="90%" data-background-color="white">
-    <h1 style="color:black">Vector Tiles</h1>
+    <h1 style="color:black"><a href="https://geographika.github.io/mapserver-mvt/" target="_blank">Vector Tiles</a></h1>
 </section>
 
 <section>
@@ -386,12 +377,10 @@ END
     <span data-markdown>
         <script type="text/template">
             - Add the MVT format to the Mapfile
-            - https://geographika.github.io/mapserver-mvt/
-            - https://github.com/geographika/mapserver-mvt
+            - Sample repository at https://github.com/geographika/mapserver-mvt
         </script>
     </span>
 </section>
-
 
 <section>
     <pre><code class="language-python" data-trim data-line-numbers="4-5">

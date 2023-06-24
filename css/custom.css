@@ -5,3 +5,11 @@
     clear: both;
     text-align: right;
 }
+
+.reveal h2 a {
+    color: #586e75 !important;
+}
+
+    .reveal h2 a:hover {
+        color: #268bd2 !important;
+    }
