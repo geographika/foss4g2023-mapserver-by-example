@@ -1,15 +1,15 @@
 <section data-markdown>
     <script type="text/template">
-        ## Mapfiles by Example
+        ## Mapfiles by Example: Vector
 
         Examples from
         <a href="https://twitter.com/mapserverstudio" target="_blank"><img class="plain" src="images/langfr-1280px-Twitter_Bird.svg.png" style="background: none;vertical-align:middle;height: 24px" />@mapserverstudio</a>
-        [#30DayMapChallenge](https://twitter.com/hashtag/30DayMapChallenge)
     </script>
 </section>
 
 <section data-background="images/space-map.png">
-    <h1 style="color:white">Space</h1>
+    <h2><a style="color: white;" href="https://app.mapserverstudio.net/#m6CjBaBV" target="_blank">Space</a></h2>
+
 </section>
 
 <section>
@@ -44,7 +44,7 @@ END
 </section>
 
 <section data-background-image="images/filegdb_states_green.png" data-background-size="90%">
-    <h2 style="color:white">FlatGeoBuffers and COLORRANGE</h2>
+    <h2><a style="color: white;" href="https://app.mapserverstudio.net/#1jR7m59u" target="_blank">FlatGeoBuffers and Color Range</a></h2>
 </section>
 
 <section>
@@ -125,40 +125,39 @@ END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
+            #### Hatching
             - Define the HATCH symbol
-            - Configure the hatching
+            - Configure the hatch style
         </script>
     </span>
 </section>
 
-<section data-background-image="images/contours2.png">
-    <h2 style="color:black"><a href="https://app.mapserverstudio.net/#ULt7iPLe" target="_blank">Contours</a></h2>
-</section>
-
 <section>
-    <pre><code class="language-python" data-trim data-line-numbers="5-6|8-9">
-LAYER
-    NAME "contours"
-    TYPE LINE
-    STATUS ON
-    CONNECTIONTYPE CONTOUR
-    DATA "/data/copernicus/eu_dem_v11_E10N00.TIF"
-    PROCESSING "BANDS=1"
-    PROCESSING "CONTOUR_ITEM=elevation"
-    PROCESSING "CONTOUR_INTERVAL=10"
-    CLASS
+    <pre><code class="language-python" data-trim data-line-numbers="8|9-10|11-14">
+CLASS
+    LABEL
+        FONT "Merriweather"
+        ...
+        TYPE TRUETYPE
+        SIZE 12
+    END
+    LEADER
+        GRIDSTEP 40 # number of pixels between positions that are tested
+        MAXDISTANCE 1500 # distance in pixels that leader text can be drawn
         STYLE
-            WIDTH 0.4
-            COLOR 50 50 50
+            COLOR 0 0 0 # normal line styles are supported
+            WIDTH 1
         END
     END
+..
 END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
-            - Use a CONTOUR CONNECTIONTYPE
-            - Set the raster DEM datasource
-            - Configure the contour intervals, GDAL handles the rest
+            #### Leader Lines
+            - Create a LEADER object in a CLASS
+            - Configure the LEADER properties
+            - Set a style for the line
         </script>
     </span>
 </section>
@@ -198,77 +197,9 @@ END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
-            - Use a different projection from the map
+            - Set a projection
             - Add a GRID configuration to a LAYER
-            - Style the GRID and add labels
-        </script>
-    </span>
-</section>
-
-<section data-background-image="images/raster.png">
-    <h2 style="color:black"><a href="https://app.mapserverstudio.net/#57BaUuL1" target="_blank">Raster Data</a></h2>
-</section>
-
-<section>
-    <pre><code class="language-python" data-trim data-line-numbers="2-5|8|9|11-18">
-MAP
-    CONFIG "AWS_ACCESS_KEY_ID" "XXXX"
-    CONFIG "AWS_SECRET_ACCESS_KEY" "XXX"
-    CONFIG "AWS_REQUEST_PAYER" "requester"
-    CONFIG "AWS_S3_ENDPOINT" "s3.amazonaws.com"
-    LAYER
-        NAME "RasterLayer"
-        TYPE RASTER
-        DATA "/vsis3/sentinel-cogs/sentinel-s2-l2a-cogs/34/T/DM/2023/6/S2B_34TDM_20230615_0_L2A/B02.tif"
-        STATUS ON
-        CLASS
-            NAME "colorramp"
-            STYLE
-                COLORRANGE "#264cff" "#ffffbf"
-                DATARANGE 1346 13578
-                RANGEITEM "value_0"
-            END
-        END
-</code></pre>
-    <span data-markdown>
-        <script type="text/template">
-            - Add the AWS settings
-            - Create a LAYER of TYPE RASTER
-            - Set a DATA source of a raster in a s3 bucket
-            - Style the raster using a COLORRANGE across a DATARANGE
-        </script>
-    </span>
-</section>
-
-<section data-background-image="images/raster_analysis.png">
-    <h2 style="color:black"><a href="https://app.mapserverstudio.net/#9JBVADFh" target="_blank">Raster Analysis</a></h2>
-</section>
-
-<section>
-    <pre><code class="language-python" data-trim data-line-numbers="3-4|8|9-14">
-LAYER
-    NAME "Difference"
-    TYPE RASTER
-    CONNECTIONTYPE OGR
-    DATA "
-    <VRTDataset rasterXSize='8640' rasterYSize='4320'>
-    <VRTRasterBand dataType='Float32' band='1' subClass='VRTDerivedRasterBand'>
-    <PixelFunctionType>diff</PixelFunctionType>
-    <SimpleSource>
-    <SourceFilename>/data/raster/wc2.1_2.5m_tmax_2021-06.tif</SourceFilename>
-            </SimpleSource>
-    <SimpleSource>
-    <SourceFilename>/data/raster/wc2.1_2.5m_tmax_1960-06.tif</SourceFilename>
-            </SimpleSource>
-        </VRTRasterBand>
-    </VRTDataset>
-    "
-</code></pre>
-    <span data-markdown>
-        <script type="text/template">
-            - Create a RASTER OGR layer
-            - Use GDAL's `diff` pixel function
-            - Add in the two source rasters as GDAL Virtual Format sources
+            - Style the GRID and add a LABEL
         </script>
     </span>
 </section>
@@ -278,7 +209,7 @@ LAYER
 </section>
 
 <section>
-    <pre><code class="language-python" data-trim data-line-numbers="9-10|20|25-27">
+    <pre><code class="language-python" data-trim data-line-numbers="11|21|23|29-31">
     LAYER
         NAME "charts"
         PROJECTION
@@ -286,7 +217,8 @@ LAYER
         END
         STATUS ON
         CONNECTIONTYPE OGR
-        CONNECTION "<OGRVRTDataSource>
+        CONNECTION "
+<OGRVRTDataSource>
     <OGRVRTLayer name='joined'>
     <SrcDataSource shared='TRUE'><![CDATA[<OGRVRTDataSource>
     <OGRVRTLayer name='countries'>
@@ -298,9 +230,12 @@ LAYER
     <SrcSQL dialect='sqlite'>SELECT iso_code, fossil_share_elec, nuclear_share_elec, renewables_share_elec FROM \"owid-energy-data\" WHERE year = '2020'</SrcSQL>
     </OGRVRTLayer>
 </OGRVRTDataSource>]]></SrcDataSource>
-    <SrcSQL>SELECT c.*,fossil_share_elec,nuclear_share_elec,renewables_share_elec FROM countries c LEFT JOIN energy e ON c.ISO_A3 = e.iso_code</SrcSQL>
+    <SrcSQL>SELECT c.*,fossil_share_elec,nuclear_share_elec,renewables_share_elec
+        FROM countries c 
+        LEFT JOIN energy e ON c.ISO_A3 = e.iso_code</SrcSQL>
     </OGRVRTLayer>
-</OGRVRTDataSource>"
+</OGRVRTDataSource>
+        "
         DATA "joined"
         EXTENT -180.0 -90.0 180.0 90
         TYPE CHART
@@ -331,7 +266,7 @@ LAYER
 </code></pre>
     <span data-markdown>
         <script type="text/template">
-            - Use CDATA for nested data sources
+            - Use CDATA (character data) for nested data sources
             - Use SQL to JOIN and select from the data sources
             - Set the LAYER to TYPE CHART and set properties
         </script>
@@ -343,7 +278,7 @@ LAYER
 </section>
 
 <section>
-    <pre><code class="language-python" data-trim data-line-numbers="4">
+    <pre><code class="language-python" data-trim data-line-numbers="3|4">
 LAYER
     NAME "lakes-smooth"
     TYPE POLYGON
@@ -367,55 +302,53 @@ END
 </section>
 
 <section>
-    <pre><code class="language-python" data-trim data-line-numbers="4-5">
+    <pre><code class="language-python" data-trim data-line-numbers="1-5|8-14">
 OUTPUTFORMAT
     NAME "mvt"
     DRIVER "MVT"
     FORMATOPTION "EDGE_BUFFER=20"
 END
-</code></pre>
-    <span data-markdown>
-        <script type="text/template">
-            - Add the MVT format to the Mapfile
-            - Sample repository at https://github.com/geographika/mapserver-mvt
-        </script>
-    </span>
-</section>
 
-<section>
-    <pre><code class="language-python" data-trim data-line-numbers="4-5">
-CLASSITEM "ADM0_A3"
-CLASS
-    EXPRESSION {ATA}
-    STYLE
-        COLOR "#F0F8FF"
+LAYER
+    CLASSITEM "ADM0_A3"
+    CLASS
+        EXPRESSION {ATA}
+        STYLE
+            COLOR "#F0F8FF"
+        END
     END
-END
-CLASS
-    EXPRESSION {AFG,ALD,BEN,BLR,BWA,COK,COL,DNK,DOM,ERI,FIN,FRA,FRO,GIB,GNB,GNQ,GRC,GTM,JPN,KIR,LKA,MHL,MMR,MWI,NCL,OMN,RWA,SDS,SMR,SVK,SYR,TCD,TON,URY,WLF}
-    STYLE
-        COLOR "#fdaf6b"
+    CLASS
+        EXPRESSION {AZE,BGD,CHL,CMR,CSI,DEU,DJI,GUY,HUN,IOA,JAM,LBN,LBY,LSO,MDG,MKD,MNG,MRT,NIU,NZL,PCN,PYF,SAU,SHN,STP,TTO,UGA,UZB,ZMB}
+        STYLE
+            COLOR "#fdc663"
+        END
     END
-END
-CLASS
-    EXPRESSION {AZE,BGD,CHL,CMR,CSI,DEU,DJI,GUY,HUN,IOA,JAM,LBN,LBY,LSO,MDG,MKD,MNG,MRT,NIU,NZL,PCN,PYF,SAU,SHN,STP,TTO,UGA,UZB,ZMB}
-    STYLE
-        COLOR "#fdc663"
-    END
+...
 END
 </code></pre>
     <span data-markdown>
         <script type="text/template">
             - Add the MVT format to the Mapfile
-            - https://geographika.github.io/mapserver-mvt/
-            - https://github.com/geographika/mapserver-mvt
+            - Style the data using CLASSes
         </script>
     </span>
 </section>
 
 <section>
+    <img class="plain" src="images/geostyler-logo-full.svg" style="background: none; width: 30%" />
+<pre><code>npm install geostyler-cli
+geostyler-cli -s mapfile -t mapbox -o ./src/data/countries.json \
+mapserver/mvt.map
+</code></pre>
+    <span data-markdown>
+        <script type="text/template">
+            - Use the GeoStyler command line tool to convert the Mapfile to a MapBox style
+            - Fully working example repository at https://github.com/geographika/mapserver-mvt
+        </script>
+    </span>
+</section>
+
+<section>
+    <h4><a href="https://geographika.github.io/mapserver-mvt/" target="_blank">Vector Tiles and GeoStyler Demo</a></h4>
     <video data-autoplay data-loop data-controls src="images/demo.mp4"></video>
 </section>
-
-
-
